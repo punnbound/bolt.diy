@@ -4,6 +4,7 @@ import { type ActionFunctionArgs } from '@remix-run/cloudflare';
 import { streamText } from '~/lib/.server/llm/stream-text';
 import { stripIndents } from '~/utils/stripIndent';
 import type { IProviderSetting, ProviderInfo } from '~/types/model';
+import { env } from '~/utils/env';
 
 export async function action(args: ActionFunctionArgs) {
   return enhancerAction(args);
@@ -99,7 +100,7 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
           `,
         },
       ],
-      env: context.cloudflare.env,
+      env: env,
       apiKeys,
       providerSettings,
     });

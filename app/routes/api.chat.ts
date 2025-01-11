@@ -6,6 +6,7 @@ import { streamText, type Messages, type StreamingOptions } from '~/lib/.server/
 import SwitchableStream from '~/lib/.server/llm/switchable-stream';
 import type { IProviderSetting } from '~/types/model';
 import { createScopedLogger } from '~/utils/logger';
+import { env } from '~/utils/env';
 
 export async function action(args: ActionFunctionArgs) {
   return chatAction(args);
@@ -108,7 +109,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
 
         const result = await streamText({
           messages,
-          env: context.cloudflare.env,
+          env: env,
           options,
           apiKeys,
           files,
@@ -125,7 +126,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
 
     const result = await streamText({
       messages,
-      env: context.cloudflare.env,
+      env: env,
       options,
       apiKeys,
       files,

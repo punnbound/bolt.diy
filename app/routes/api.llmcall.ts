@@ -6,6 +6,7 @@ import type { IProviderSetting, ProviderInfo } from '~/types/model';
 import { generateText } from 'ai';
 import { getModelList, PROVIDER_LIST } from '~/utils/constants';
 import { MAX_TOKENS } from '~/lib/.server/llm/constants';
+import { env } from '~/utils/env';
 
 export async function action(args: ActionFunctionArgs) {
   return llmCallAction(args);
@@ -77,7 +78,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
             content: `${message}`,
           },
         ],
-        env: context.cloudflare.env,
+        env: env,
         apiKeys,
         providerSettings,
       });
@@ -105,7 +106,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
     }
   } else {
     try {
-      const MODEL_LIST = await getModelList({ apiKeys, providerSettings, serverEnv: context.cloudflare.env as any });
+      const MODEL_LIST = await getModelList({ apiKeys, providerSettings, serverEnv: env as any });
       const modelDetails = MODEL_LIST.find((m) => m.name === model);
 
       if (!modelDetails) {
@@ -130,7 +131,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         ],
         model: providerInfo.getModelInstance({
           model: modelDetails.name,
-          serverEnv: context.cloudflare.env as any,
+          serverEnv: env as any,
           apiKeys,
           providerSettings,
         }),
